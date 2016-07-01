@@ -19,7 +19,7 @@ db.open(function(err, db) {
     }
 });
 
-exports.findById = function(req, res) {
+/*exports.findById = function(req, res) {
     var id = req.params.id;
     console.log('Retrieving wine: ' + id);
     db.collection('wines', function(err, collection) {
@@ -27,7 +27,18 @@ exports.findById = function(req, res) {
             res.send(item);
         });
     });
-};
+};*/
+
+var ObjectId = require('mongodb').ObjectID;
+
+var get_by_id = function(id, callback) {
+    console.log("find by: "+ id);
+    get_collection(function(collection) {
+        collection.findOne({"_id": new ObjectId(id)}, function(err, doc) {
+            callback(doc);
+        });
+    });
+}
 
 exports.findAll = function(req, res) {
     db.collection('wines', function(err, collection) {
