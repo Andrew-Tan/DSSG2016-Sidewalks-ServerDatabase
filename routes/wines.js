@@ -2,7 +2,8 @@ var mongo = require('mongodb');
 
 var Server = mongo.Server,
     Db = mongo.Db,
-    BSON = mongo.BSONPure;
+    BSON = require('mongodb').BSONPure;
+    // BSON = mongo.BSONPure;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
 db = new Db('winedb', server);
@@ -29,16 +30,15 @@ db.open(function(err, db) {
     });
 };*/
 
-var ObjectId = require('mongodb').ObjectID;
-
-exports.findById = function(id, callback) {
-    console.log("find by: "+ id);
-    get_collection(function(collection) {
-        collection.findOne({"_id": new ObjectId(id)}, function(err, doc) {
-            callback(doc);
+exports.findById = function (req, res) {
+    var id = require('mongodb').ObjectID(req.params.id);
+    console.log('Retrieving wine: ' + id);
+    db.collection('wines', function (err, collection) {
+        collection.findOne({'_id': id}, function (err, item) {
+            res.send(item);
         });
     });
-}
+};
 
 exports.findAll = function(req, res) {
     db.collection('wines', function(err, collection) {
