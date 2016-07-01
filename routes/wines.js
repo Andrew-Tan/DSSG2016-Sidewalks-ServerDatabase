@@ -19,7 +19,7 @@ db.open(function(err, db) {
     }
 });
 
-/*exports.findById = function(req, res) {
+exports.findById = function(req, res) {
     var id = req.params.id;
     console.log('Retrieving wine: ' + id);
     db.collection('wines', function(err, collection) {
@@ -27,11 +27,11 @@ db.open(function(err, db) {
             res.send(item);
         });
     });
-};*/
+};
 
 var ObjectId = require('mongodb').ObjectID;
 
-var get_by_id = function(id, callback) {
+exports.findOne = function(id, callback) {
     console.log("find by: "+ id);
     get_collection(function(collection) {
         collection.findOne({"_id": new ObjectId(id)}, function(err, doc) {
